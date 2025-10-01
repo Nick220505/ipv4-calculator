@@ -301,11 +301,6 @@ export default function Home() {
             </div>
           )}
         </div>
-
-        {/* Footer */}
-        <div className="text-center mt-8 text-gray-600 dark:text-gray-400 text-sm">
-          <p>Calculadora IPv4 - Vencimiento: 5 de octubre a 23:59</p>
-        </div>
       </div>
     </div>
   );
