@@ -1,0 +1,100 @@
+╔═══════════════════════════════════════════════════════════════╗
+║         📦 ARCHIVOS A COMPRIMIR Y SUBIR AL SERVIDOR          ║
+║              Redes de Datos 1 - 246827                       ║
+╚═══════════════════════════════════════════════════════════════╝
+
+🔴 IMPORTANTE: Primero ejecuta "npm run build" 🔴
+
+Luego comprime estos archivos/carpetas:
+
+📁 CARPETAS:
+  ✅ .next/                    ← GENERADO POR npm run build
+  ✅ public/
+
+📄 ARCHIVOS:
+  ✅ package.json
+  ✅ package-lock.json
+  ✅ next.config.ts
+  ✅ tsconfig.json
+  ✅ postcss.config.mjs
+
+📄 OPCIONAL (documentación):
+  ⭕ DEPLOYMENT.md
+  ⭕ install-server.sh
+  ⭕ INSTRUCCIONES-RAPIDAS.md
+
+❌ NO INCLUIR:
+  ❌ node_modules/           ← Se instala en el servidor
+  ❌ src/                     ← No necesaria en producción
+  ❌ .git/
+  ❌ .next/cache/
+
+═══════════════════════════════════════════════════════════════
+
+📋 PASOS RÁPIDOS:
+
+1. En tu PC (Windows):
+   ┌─────────────────────────────────────────────────┐
+   │ npm run build                                   │
+   │ (espera a que termine)                          │
+   └─────────────────────────────────────────────────┘
+
+2. Comprimir archivos:
+   ┌─────────────────────────────────────────────────┐
+   │ OPCIÓN A: Ejecutar create-package.bat          │
+   │                                                  │
+   │ OPCIÓN B: Comprimir manualmente con WinRAR:    │
+   │   - Selecciona las carpetas/archivos de arriba │
+   │   - Click derecho → Agregar a archivo          │
+   │   - Nombre: ipv4-calculator.zip                │
+   └─────────────────────────────────────────────────┘
+
+3. Subir al servidor Rocky Linux 9:
+   ┌─────────────────────────────────────────────────┐
+   │ scp ipv4-calculator.zip usuario@servidor:/tmp/  │
+   │                                                  │
+   │ O usar WinSCP, FileZilla, etc.                  │
+   └─────────────────────────────────────────────────┘
+
+4. En el servidor:
+   ┌─────────────────────────────────────────────────┐
+   │ cd /tmp                                         │
+   │ unzip ipv4-calculator.zip -d /var/www/app      │
+   │ cd /var/www/app                                 │
+   │ sudo bash install-server.sh                     │
+   └─────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════
+
+📝 NOTA SOBRE "index.XXX":
+
+✅ Next.js genera automáticamente un archivo index.html
+   
+   Ubicación: .next/server/app/index.html
+   
+   Al ejecutar "npm start", Next.js sirve este archivo
+   automáticamente en el puerto configurado.
+
+═══════════════════════════════════════════════════════════════
+
+🎯 RESULTADO FINAL:
+
+El servidor estará sirviendo en:
+  → http://localhost:80 (desde el servidor)
+  → http://IP_SERVIDOR (desde cualquier PC en la red)
+
+La página principal es index.html (generada por Next.js)
+El archivo de código es JavaScript (Next.js/React)
+
+═══════════════════════════════════════════════════════════════
+
+💡 TIPS:
+
+• El build tarda unos segundos, espera a que termine
+• El archivo .next/ es el MÁS IMPORTANTE (contiene el código compilado)
+• En el servidor necesitas Node.js instalado
+• El puerto 80 requiere sudo
+• Lee DEPLOYMENT.md para instrucciones detalladas
+
+═══════════════════════════════════════════════════════════════
+
