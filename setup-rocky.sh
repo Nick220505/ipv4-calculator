@@ -25,3 +25,5 @@ npm --version
 
 # Clonar repositorio github
 git clone https://github.com/Nick220505/ipv4-calculator.git
+
+ip addr show
