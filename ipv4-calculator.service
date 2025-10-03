@@ -1,0 +1,17 @@
+[Unit]
+Description=IPv4 Calculator - Calculadora de redes IPv4
+Documentation=https://github.com/Nick220505/ipv4-calculator
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/var/www/ipv4-calculator
+Environment=NODE_ENV=production
+Environment=PORT=80
+ExecStart=/usr/bin/npm start
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

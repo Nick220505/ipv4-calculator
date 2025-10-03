@@ -25,6 +25,9 @@ tar -czf "$FILENAME" \
     next.config.ts \
     tsconfig.json \
     postcss.config.mjs \
+    deploy.sh \
+    setup-rocky.sh \
+    ipv4-calculator.service \
     DEPLOYMENT.md
 
 echo "✅ Paquete creado: $FILENAME"

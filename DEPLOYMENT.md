@@ -1,53 +1,114 @@
 # Guía de Despliegue - Calculadora IPv4
+## Redes de Datos 1 - Puerto 80
 
-## 📦 Archivos a Subir
+## 🎯 Objetivo
+Desplegar calculadora IPv4 en Rocky Linux 9 en puerto 80.
 
-Debes comprimir y subir los siguientes archivos/carpetas:
+## 📦 Crear Paquete para Subir
 
-```
-ipv4-calculator/
-├── .next/              (generado con npm run build)
-├── public/
-├── src/
-├── node_modules/       (o instalar en el servidor)
-├── package.json
-├── package-lock.json
-├── next.config.ts
-├── tsconfig.json
-└── postcss.config.mjs
-```
-
-## 🚀 Opción 1: Despliegue con Node.js (RECOMENDADA)
-
-### En tu máquina local:
+### 1. Preparar archivos (en tu máquina Windows):
 
 ```bash
-# 1. Construir el proyecto
+# Construir la aplicación
 npm run build
 
-# 2. Crear archivo comprimido (incluir archivos necesarios)
-# Desde el directorio del proyecto
-tar -czf ipv4-calculator.tar.gz .next public package*.json next.config.ts tsconfig.json postcss.config.mjs src
+# Crear paquete comprimido
+./create-package.sh
 ```
 
-### En el servidor Rocky Linux 9:
+Esto generará un archivo `ipv4-calculator-YYYYMMDD-HHMMSS.tar.gz` con todos los archivos necesarios.
+
+## � Instalación en Rocky Linux 9
+
+### 1. Configuración inicial del servidor:
 
 ```bash
-# 1. Instalar Node.js y npm
-sudo dnf module install nodejs:20
-sudo dnf install npm
+# Ejecutar script de configuración
+chmod +x setup-rocky.sh
+./setup-rocky.sh
+```
 
-# 2. Extraer el archivo
-tar -xzf ipv4-calculator.tar.gz -C /var/www/ipv4-calculator
+### 2. Instalar la aplicación:
+
+```bash
+# Extraer el paquete
+sudo tar -xzf ipv4-calculator-*.tar.gz -C /var/www/ipv4-calculator/
+
+# Cambiar al directorio
 cd /var/www/ipv4-calculator
 
-# 3. Instalar dependencias de producción
-npm ci --omit=dev
+# Instalar dependencias
+npm install --production
 
-# 4. Iniciar en puerto 80 (requiere sudo o configurar privilegios)
-sudo PORT=80 npm start
+# Construir si es necesario
+npm run build
+```
 
-# O usar un puerto normal y redirigir con firewall:
+### 3. Iniciar en puerto 80:
+
+#### Opción A: Inicio manual
+```bash
+sudo npm start
+```
+
+#### Opción B: Como servicio (RECOMENDADO)
+```bash
+# Copiar archivo de servicio
+sudo cp ipv4-calculator.service /etc/systemd/system/
+
+# Habilitar y iniciar servicio
+sudo systemctl daemon-reload
+sudo systemctl enable ipv4-calculator
+sudo systemctl start ipv4-calculator
+
+# Verificar estado
+sudo systemctl status ipv4-calculator
+```
+
+## 🔧 Comandos Útiles
+
+```bash
+# Ver logs del servicio
+sudo journalctl -u ipv4-calculator -f
+
+# Reiniciar servicio
+sudo systemctl restart ipv4-calculator
+
+# Detener servicio
+sudo systemctl stop ipv4-calculator
+
+# Ver qué proceso usa puerto 80
+sudo netstat -tlnp | grep :80
+
+# Verificar firewall
+sudo firewall-cmd --list-all
+sudo firewall-cmd --add-port=80/tcp --permanent
+sudo firewall-cmd --reload
+```
+
+## 🌐 Acceso a la Aplicación
+
+Una vez iniciada, accede a: `http://IP_DEL_SERVIDOR`
+
+## 📋 Características Implementadas
+
+✅ Entrada IP en formato decimal (X.X.X.X)  
+✅ Entrada máscara en formato (X.X.X.X)  
+✅ Cálculo de IP de red  
+✅ Cálculo de IP de broadcast  
+✅ Cantidad de IPs útiles/hosts  
+✅ Rango de IPs útiles  
+✅ Clasificación de IP (A, B, C, D, E)  
+✅ Detección IP pública/privada  
+✅ Visualización binaria de red y host  
+✅ Puerto 80 configurado  
+
+## 🎓 Para la Sustentación
+
+1. **Demostrar funcionamiento**: Probar con diferentes IPs y máscaras
+2. **Mostrar código**: Explicar la lógica de cálculo
+3. **Explicar despliegue**: Cómo se configuró en Rocky Linux 9
+4. **Responder preguntas**: Estar preparado para defender las decisiones técnicas
 PORT=3000 npm start &
 sudo firewall-cmd --zone=public --add-forward-port=port=80:proto=tcp:toport=3000 --permanent
 sudo firewall-cmd --reload
